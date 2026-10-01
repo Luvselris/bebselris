@@ -41,10 +41,9 @@
 
     .container {
       width: 100%;
-      max-width: 440px;
+      max-width: 460px;
     }
 
-    /* LOGIN SCREEN */
     #loginView {
       min-height: 80vh;
       display: flex;
@@ -125,7 +124,6 @@
       display: none;
     }
 
-    /* DASHBOARD */
     #dashboardView {
       display: none;
     }
@@ -177,7 +175,7 @@
 
     .preview-box {
       width: 100%;
-      height: 110px;
+      height: 120px;
       border-radius: 16px;
       object-fit: cover;
       margin-top: 8px;
@@ -196,7 +194,6 @@
       display: none;
     }
 
-    /* List Posts Admin */
     .admin-posts-list {
       display: flex;
       flex-direction: column;
@@ -218,8 +215,8 @@
     }
 
     .admin-post-thumb {
-      width: 50px;
-      height: 50px;
+      width: 55px;
+      height: 55px;
       border-radius: 10px;
       object-fit: cover;
       background: #f4f4f6;
@@ -242,7 +239,6 @@
 
   <div class="container">
 
-    <!-- 1. LOGIN SCREEN -->
     <div id="loginView">
       <div class="login-card">
         <h1 class="login-title">Admin Dashboard 🎱</h1>
@@ -264,7 +260,6 @@
       </div>
     </div>
 
-    <!-- 2. DASHBOARD SCREEN -->
     <div id="dashboardView">
       <div class="top-bar">
         <div class="welcome-text">bebselris Manager ♡</div>
@@ -273,10 +268,10 @@
 
       <!-- ส่วนที่ 1: แบนเนอร์ & โปรไฟล์ -->
       <div class="panel-card">
-        <div class="panel-title">🖼 แบนเนอร์ & โปรไฟล์ (ใส่ GIF หรือรูปได้)</div>
+        <div class="panel-title">🖼 แบนเนอร์ & โปรไฟล์</div>
 
         <div class="form-group">
-          <label>ลิงก์รูปแบนเนอร์ GIF / Image (วางลิงก์ได้ทันทีไม่ต้องแปลง)</label>
+          <label>ลิงก์รูปแบนเนอร์ GIF / Image (ขนาดตามจริง)</label>
           <input type="text" id="bannerUrlInput" class="input-field" placeholder="https://...gif หรือ .png" oninput="previewBanner(this.value)">
           <img id="bannerPrev" class="preview-box" alt="Banner Preview">
         </div>
@@ -289,7 +284,7 @@
         <hr style="border:none; border-top:1px dashed var(--border-soft); margin:16px 0;">
 
         <div class="form-group">
-          <label>ลิงก์รูปโปรไฟล์ GIF / Image (ภาพนิ่งหรือเคลื่อนไหว)</label>
+          <label>ลิงก์รูปโปรไฟล์ GIF / Image</label>
           <input type="text" id="profileUrlInput" class="input-field" placeholder="https://...gif หรือ .png" oninput="previewProfile(this.value)">
           <img id="profilePrev" class="preview-circle" alt="Profile Preview">
         </div>
@@ -300,7 +295,7 @@
         </div>
       </div>
 
-      <!-- ส่วนที่ 2: ข้อความร้าน, ลูกเล่น & ช่องทางติดต่อ -->
+      <!-- ส่วนที่ 2: ข้อมูลร้าน & ลูกเล่น -->
       <div class="panel-card">
         <div class="panel-title">📝 ข้อความร้าน, ลูกเล่น & เพลง</div>
 
@@ -324,7 +319,6 @@
           <input type="url" id="contactUrlInput" class="input-field" placeholder="https://lin.ee/Ql4HBD4">
         </div>
 
-        <!-- ช่องแก้ไขลูกเล่นอีโมจิลอย -->
         <div class="form-group">
           <label>ลูกเล่นอีโมจิลอยไปมา (เว้นวรรคระหว่างตัว เช่น ☁️ 🩶 🎱)</label>
           <input type="text" id="floatingIconsInput" class="input-field" placeholder="☁️ 🩶 🎱">
@@ -340,13 +334,13 @@
         </button>
       </div>
 
-      <!-- ส่วนที่ 3: เพิ่มโพสต์งานใหม่ -->
+      <!-- ส่วนที่ 3: เพิ่มโพสต์งานใหม่ตามขนาดจริง -->
       <div class="panel-card">
-        <div class="panel-title">➕ เพิ่มโพสต์ตัวอย่างงานใหม่</div>
+        <div class="panel-title">➕ เพิ่มโพสต์ตัวอย่างงานใหม่ (ขนาดจริง)</div>
 
         <div class="form-group">
-          <label>ลิงก์รูปงาน (หรือ GIF)</label>
-          <input type="text" id="newPostUrl" class="input-field" placeholder="https://...รูปภาพหรือ GIF">
+          <label>ลิงก์รูปงาน (หรือ GIF) - แนะนำใช้ลิงก์เพื่อภาพขนาดเต็ม 100%</label>
+          <input type="text" id="newPostUrl" class="input-field" placeholder="https://... ลิงก์รูปภาพหรือ GIF">
         </div>
 
         <div class="form-group">
@@ -490,6 +484,7 @@
       }
     }
 
+    // เก็บภาพคุณภาพสูงตามจริง
     function compressImage(file, maxWidth, quality, callback) {
       const reader = new FileReader();
       reader.onload = function(e) {
@@ -515,7 +510,7 @@
 
     function uploadImageDirect(input, key) {
       if (input.files && input.files[0]) {
-        compressImage(input.files[0], 650, 0.72, function(base64) {
+        compressImage(input.files[0], 1200, 0.85, function(base64) {
           siteConfig[key] = base64;
           if (key === 'banner') {
             document.getElementById('bannerUrlInput').value = '';
@@ -559,7 +554,8 @@
 
     function uploadPostImage(input) {
       if (input.files && input.files[0]) {
-        compressImage(input.files[0], 550, 0.7, function(base64) {
+        // เพิ่มความกว้างสูงสุดเป็น 1200px ให้ภาพคมชัดขนาดใหญ่ตามจริง
+        compressImage(input.files[0], 1200, 0.85, function(base64) {
           tempPostBase64 = base64;
           document.getElementById('newPostUrl').value = '';
         });
@@ -636,7 +632,7 @@
     }
 
     async function deletePost(id) {
-      if (confirm('ต้องการลบโพสต์งานนี้ใช่หรือไม่คะ? 🗑')) {
+      if (confirm('ต้องการลบโพสต์งานนี้ใช่หรือไม่คะ? 🗑️')) {
         try {
           await db.collection("bebselris_posts").doc(id).delete();
         } catch (e) {
