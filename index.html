@@ -40,7 +40,6 @@
       position: relative;
     }
 
-    /* Floating Emojis */
     .floating-container {
       position: fixed;
       top: 0;
@@ -69,14 +68,15 @@
     }
 
     .container {
-      max-width: 440px;
+      width: 100%;
+      max-width: 500px;
       margin: 0 auto;
       padding: 24px 16px 80px;
       position: relative;
       z-index: 2;
     }
 
-    /* Profile Box */
+    /* Profile Card */
     .profile-card {
       background: var(--card-bg);
       backdrop-filter: blur(14px);
@@ -88,7 +88,6 @@
       margin-bottom: 16px;
     }
 
-    /* แบนเนอร์บนสุด */
     .banner-container {
       width: 100%;
       height: 140px;
@@ -104,7 +103,6 @@
       object-fit: cover;
     }
 
-    /* รูปโปรไฟล์ */
     .profile-wrap {
       position: relative;
       margin-top: -46px;
@@ -138,7 +136,6 @@
       padding: 0 10px;
     }
 
-    /* ปุ่มช่องทางติดต่อ */
     .contact-btn {
       display: inline-flex;
       align-items: center;
@@ -162,7 +159,7 @@
       background: #fafafa;
     }
 
-    /* Section Grid Posts */
+    /* Section Posts: แสดงขนาดรูปตามจริง */
     .section-card {
       background: var(--card-bg);
       backdrop-filter: blur(14px);
@@ -184,40 +181,42 @@
       padding-left: 2px;
     }
 
+    /* ตารางโพสต์: แสดงอัตราส่วนจริงของรูป ไม่บีบตัด */
     .posts-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
 
     .post-slot {
-      aspect-ratio: 1;
-      border-radius: 14px;
+      width: 100%;
+      border-radius: 18px;
       overflow: hidden;
       border: 1.5px solid #ffffff;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
-      background: #ededf0;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+      background: #ffffff;
       cursor: pointer;
-      position: relative;
     }
 
     .post-slot img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
+      max-height: 800px;
+      object-fit: contain;
+      display: block;
       transition: transform 0.2s ease;
     }
 
     .post-slot:hover img {
-      transform: scale(1.05);
+      transform: scale(1.01);
     }
 
-    /* Modal Popup สำหรับดูงาน */
+    /* Modal Popup ดูงานขนาดเต็ม */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(30, 30, 34, 0.45);
-      backdrop-filter: blur(6px);
+      background: rgba(30, 30, 34, 0.6);
+      backdrop-filter: blur(8px);
       z-index: 9999;
       display: none;
       align-items: center;
@@ -231,11 +230,13 @@
 
     .modal-card {
       width: 100%;
-      max-width: 380px;
+      max-width: 460px;
+      max-height: 90vh;
+      overflow-y: auto;
       background: #ffffff;
       border-radius: 24px;
-      padding: 18px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+      padding: 16px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
       animation: popIn 0.22s ease;
       position: relative;
     }
@@ -247,42 +248,49 @@
 
     .modal-close {
       position: absolute;
-      top: 12px;
-      right: 12px;
-      background: #f4f4f6;
+      top: 14px;
+      right: 14px;
+      background: rgba(244, 244, 246, 0.9);
       border: none;
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       color: var(--pastel-dark);
-      font-size: 13px;
+      font-size: 15px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .modal-img-wrap {
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #f7f7f8;
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    .modal-img-wrap {
-      width: 100%;
-      height: 220px;
-      border-radius: 16px;
-      overflow: hidden;
-      background: #f7f7f8;
-      margin-bottom: 12px;
-    }
-
+    /* รูปขนาดจริงตามที่ลงไว้ */
     .modal-img-wrap img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
+      max-height: 70vh;
+      object-fit: contain;
+      display: block;
     }
 
     .modal-desc {
-      font-size: 13px;
+      font-size: 13.5px;
       line-height: 1.6;
       color: var(--pastel-gray);
       white-space: pre-line;
       margin-bottom: 14px;
+      padding: 0 4px;
     }
 
     .modal-link-btn {
@@ -291,7 +299,7 @@
       justify-content: center;
       gap: 6px;
       width: 100%;
-      padding: 11px;
+      padding: 12px;
       border-radius: 16px;
       background: var(--btn-charcoal);
       color: #ffffff;
@@ -316,15 +324,11 @@
 </head>
 <body>
 
-  <!-- Floating Emojis -->
   <div class="floating-container" id="emojiContainer"></div>
-
-  <!-- Background Music -->
   <audio id="bgMusic" loop autoplay playsinline src="https://files.catbox.moe/zy1wnq.mp3"></audio>
 
   <div class="container">
 
-    <!-- กล่องโปรไฟล์ -->
     <div class="profile-card">
       <div class="banner-container">
         <img id="mainBanner" class="banner-img" src="https://i.postimg.cc/26YfhPc1/CA378830-D049-4F10-B91D-83E369F619D9.gif" alt="Banner">
@@ -349,7 +353,7 @@
     <div class="section-card">
       <div class="section-title">📂 Portfolio & Works</div>
       <div class="posts-grid" id="postsGrid">
-        <p style="text-align: center; grid-column: span 3; font-size: 12px; color: var(--pastel-gray);">กำลังโหลดตัวอย่างงาน...</p>
+        <p style="text-align: center; font-size: 12px; color: var(--pastel-gray);">กำลังโหลดตัวอย่างงาน...</p>
       </div>
     </div>
 
@@ -357,7 +361,6 @@
 
   </div>
 
-  <!-- Modal สำหรับกดดูโพสต์ -->
   <div class="modal-overlay" id="postModal">
     <div class="modal-card">
       <button type="button" class="modal-close" onclick="closeModal()">✕</button>
@@ -386,10 +389,8 @@
     }
     const db = firebase.firestore();
 
-    // รายการอีโมจิตั้งต้น (จะเปลี่ยนตามที่แอดมินตั้งค่าใน Firestore)
-    let floatingIcons = ['☁️️', '🩶', '🎱'];
+    let floatingIcons = ['☁️', '🩶', '🎱'];
 
-    // ดึงการตั้งค่าเว็บ Real-time
     db.collection("bebselris_portfolio").doc("site_config").onSnapshot(doc => {
       if (doc.exists) {
         const d = doc.data();
@@ -401,7 +402,6 @@
         if (d.contactId) document.getElementById('contactIdText').textContent = d.contactId;
         if (d.contactUrl) document.getElementById('contactLinkBtn').href = d.contactUrl;
 
-        // อัปเดตลูกเล่นลอยตามที่แอดมินตั้งค่า
         if (d.floatingIcons && d.floatingIcons.trim() !== '') {
           floatingIcons = d.floatingIcons.trim().split(/\s+/);
         }
@@ -416,13 +416,12 @@
       }
     });
 
-    // ดึงโพสต์งาน
     db.collection("bebselris_posts").orderBy("createdAt", "desc").onSnapshot(snapshot => {
       const grid = document.getElementById('postsGrid');
       grid.innerHTML = '';
 
       if (snapshot.empty) {
-        grid.innerHTML = '<p style="text-align:center; grid-column:span 3; font-size:12px; color:var(--pastel-gray);">ยังไม่มีตัวอย่างงานที่ลงไว้ค่ะ ♡</p>';
+        grid.innerHTML = '<p style="text-align:center; font-size:12px; color:var(--pastel-gray);">ยังไม่มีตัวอย่างงานที่ลงไว้ค่ะ ♡</p>';
         return;
       }
 
@@ -431,7 +430,7 @@
         const slot = document.createElement('div');
         slot.className = 'post-slot';
         slot.onclick = () => openPostModal(item);
-        slot.innerHTML = `<img src="${item.imageUrl || 'https://i.ibb.co/gZg1bdv9/IMG-3203.jpg'}" alt="Portfolio">`;
+        slot.innerHTML = `<img src="${item.imageUrl || ''}" alt="Portfolio">`;
         grid.appendChild(slot);
       });
     });
@@ -455,7 +454,6 @@
       document.getElementById('postModal').classList.remove('active');
     }
 
-    // Audio Autoplay
     const music = document.getElementById('bgMusic');
     function startMusic() {
       if (music.paused) music.play().catch(() => {});
@@ -466,7 +464,6 @@
       document.body.addEventListener('touchstart', startMusic, { once: true });
     });
 
-    // Floating Emojis
     const emojiBox = document.getElementById('emojiContainer');
     function createEmoji() {
       if (!floatingIcons || floatingIcons.length === 0) return;
@@ -482,3 +479,4 @@
   </script>
 </body>
 </html>
+
