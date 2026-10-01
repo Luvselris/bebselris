@@ -2,27 +2,26 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin ♡ soeulity</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>bebselris ♡ Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <style>
     :root {
-      --bg-color: #fff9fb;
-      --card-bg: rgba(255, 255, 255, 0.95);
-      --pastel-pink: #ffd6e0;
-      --soft-pink: #fff0f4;
-      --border-soft: #fde6ed;
-      --text-main: #685055;
-      --text-muted: #a68e94;
-      --pink-title: #f2849e;
-      --btn-pink: #f7a1b5;
-      --glow-shadow: 0 10px 30px rgba(255, 214, 224, 0.45);
+      --bg-color: #f7f7f8;
+      --card-bg: rgba(255, 255, 255, 0.94);
+      --pastel-dark: #3a3a3e;
+      --pastel-gray: #71717a;
+      --pastel-light-gray: #e4e4e7;
+      --border-soft: #ececf0;
+      --btn-charcoal: #27272a;
+      --glow-shadow: 0 10px 28px rgba(0, 0, 0, 0.05);
     }
 
     * {
@@ -30,470 +29,349 @@
       margin: 0;
       padding: 0;
       font-family: 'Quicksand', 'Mitr', sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background: radial-gradient(circle at top, #fff3f6 0%, #fff9fb 50%, #fff5f8 100%);
-      color: var(--text-main);
+      background: radial-gradient(circle at top, #ffffff 0%, #f4f4f6 60%, #ebebef 100%);
+      color: var(--pastel-dark);
       min-height: 100vh;
       overflow-x: hidden;
-      padding: 24px 16px 80px;
-      display: flex;
-      justify-content: center;
+      position: relative;
+    }
+
+    /* Floating Emojis */
+    .floating-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .float-item {
+      position: absolute;
+      bottom: -60px;
+      font-size: 22px;
+      animation: floatUp 12s linear infinite;
+      opacity: 0.65;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.12));
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+      15% { opacity: 0.75; }
+      85% { opacity: 0.75; }
+      100% { transform: translateY(-115vh) rotate(360deg); opacity: 0; }
     }
 
     .container {
-      width: 100%;
       max-width: 440px;
+      margin: 0 auto;
+      padding: 24px 16px 80px;
+      position: relative;
+      z-index: 2;
     }
 
-    #loginView {
-      min-height: 80vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .login-card {
+    /* Profile Box */
+    .profile-card {
       background: var(--card-bg);
       backdrop-filter: blur(14px);
       border-radius: 30px;
-      padding: 38px 24px;
+      padding: 12px 14px 22px;
       box-shadow: var(--glow-shadow);
       border: 2px solid #ffffff;
       text-align: center;
-    }
-
-    .login-title {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--pink-title);
-      margin-bottom: 22px;
-    }
-
-    .form-group {
-      text-align: left;
-      margin-bottom: 14px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 12.5px;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-      padding-left: 4px;
-      font-weight: 600;
-    }
-
-    .input-field, .textarea-field {
-      width: 100%;
-      padding: 11px 16px;
-      border: 1.5px solid var(--border-soft);
-      border-radius: 18px;
-      font-size: 13.5px;
-      background: #ffffff;
-      color: var(--text-main);
-      outline: none;
-      transition: all 0.2s;
-    }
-
-    .input-field:focus, .textarea-field:focus {
-      border-color: var(--pastel-pink);
-      box-shadow: 0 0 0 3px rgba(255, 214, 224, 0.35);
-    }
-
-    .btn-pink {
-      width: 100%;
-      background: linear-gradient(135deg, #ffffff, var(--btn-pink));
-      color: #ffffff;
-      border: none;
-      padding: 12px;
-      border-radius: 20px;
-      font-size: 14.5px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 6px 16px rgba(247, 161, 181, 0.35);
-      transition: all 0.2s;
-      margin-top: 10px;
-    }
-
-    .error-text {
-      color: #f2849e;
-      font-size: 13px;
-      margin-top: 10px;
-      display: none;
-    }
-
-    #dashboardView {
-      display: none;
-    }
-
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 18px;
-      padding: 4px 6px;
-    }
-
-    .welcome-text {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--pink-title);
-    }
-
-    .logout-btn {
-      background: #ffffff;
-      color: var(--pink-title);
-      border: 1.5px solid var(--border-soft);
-      padding: 6px 14px;
-      border-radius: 16px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .panel-card {
-      background: var(--card-bg);
-      backdrop-filter: blur(14px);
-      border-radius: 26px;
-      padding: 20px 18px;
-      box-shadow: var(--glow-shadow);
-      border: 2px solid #ffffff;
       margin-bottom: 16px;
     }
 
-    .panel-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--pink-title);
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .upload-box {
-      border: 1.5px dashed var(--border-soft);
-      border-radius: 20px;
-      padding: 14px;
-      text-align: center;
-      background: #ffffff;
-      margin-bottom: 14px;
-    }
-
-    .preview-banner {
+    /* แบนเนอร์บนสุด */
+    .banner-container {
       width: 100%;
-      height: 120px;
-      border-radius: 16px;
-      object-fit: cover;
-      margin-bottom: 10px;
-      display: none;
-      border: 1.5px solid #ffffff;
-    }
-
-    .preview-profile {
-      width: 76px;
-      height: 76px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin: 0 auto 10px;
-      display: none;
-      border: 2px solid var(--border-soft);
-    }
-
-    .file-btn {
-      display: inline-block;
-      background: linear-gradient(135deg, #ffffff, var(--btn-pink));
-      color: #ffffff;
-      padding: 6px 16px;
-      border-radius: 16px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(247, 161, 181, 0.3);
-    }
-
-    .hl-admin-card {
-      background: #ffffff;
-      border: 1.5px solid var(--border-soft);
-      border-radius: 20px;
-      padding: 14px;
-      margin-bottom: 14px;
-    }
-
-    .hl-header-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .hl-cover-preview {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 1.5px solid var(--border-soft);
-      background: #fff9fb;
-    }
-
-    .stories-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 6px;
-      margin-top: 8px;
-    }
-
-    .story-slot {
-      position: relative;
-      aspect-ratio: 1;
-      border-radius: 12px;
-      border: 1px dashed var(--border-soft);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      height: 140px;
+      border-radius: 22px;
       overflow: hidden;
-      background: #fffbfc;
+      background: #f0f0f2;
+      border: 1px solid #ffffff;
     }
 
-    .story-slot img {
+    .banner-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
 
-    .del-story-btn {
-      position: absolute;
-      top: 2px;
-      right: 2px;
-      background: rgba(242, 132, 158, 0.9);
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 18px;
-      height: 18px;
-      font-size: 10px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* รูปโปรไฟล์ */
+    .profile-wrap {
+      position: relative;
+      margin-top: -46px;
+      display: inline-block;
     }
 
-    .admin-posts-grid {
+    .profile-img {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #ffffff;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      background: #ffffff;
+    }
+
+    .store-name {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--pastel-dark);
+      margin-top: 8px;
+      letter-spacing: 0.3px;
+    }
+
+    .bio-text {
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--pastel-gray);
+      white-space: pre-line;
+      margin-top: 6px;
+      padding: 0 10px;
+    }
+
+    /* ปุ่มช่องทางติดต่อ */
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 14px;
+      padding: 9px 20px;
+      border-radius: 20px;
+      background: #ffffff;
+      border: 1.5px solid var(--pastel-light-gray);
+      color: var(--pastel-dark);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+      transition: all 0.2s ease;
+    }
+
+    .contact-btn:active {
+      transform: scale(0.97);
+      background: #fafafa;
+    }
+
+    /* Section Grid Posts */
+    .section-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(14px);
+      border-radius: 26px;
+      padding: 18px 16px;
+      box-shadow: var(--glow-shadow);
+      border: 2px solid #ffffff;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--pastel-dark);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding-left: 2px;
+    }
+
+    .posts-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
-      margin-top: 10px;
     }
 
-    .admin-post-slot {
+    .post-slot {
       aspect-ratio: 1;
       border-radius: 14px;
-      border: 1.5px dashed var(--border-soft);
-      position: relative;
       overflow: hidden;
-      background: #ffffff;
+      border: 1.5px solid #ffffff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+      background: #ededf0;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .post-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.2s ease;
+    }
+
+    .post-slot:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Modal Popup สำหรับดูงาน */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(30, 30, 34, 0.45);
+      backdrop-filter: blur(6px);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-overlay.active {
       display: flex;
-      flex-direction: column;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 380px;
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+      animation: popIn 0.22s ease;
+      position: relative;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #f4f4f6;
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      color: var(--pastel-dark);
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    .admin-post-slot img {
+    .modal-img-wrap {
+      width: 100%;
+      height: 220px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #f7f7f8;
+      margin-bottom: 12px;
+    }
+
+    .modal-img-wrap img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
 
-    .post-edit-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(40, 20, 25, 0.45);
+    .modal-desc {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--pastel-gray);
+      white-space: pre-line;
+      margin-bottom: 14px;
+    }
+
+    .modal-link-btn {
       display: flex;
       align-items: center;
       justify-content: center;
-      opacity: 0;
+      gap: 6px;
+      width: 100%;
+      padding: 11px;
+      border-radius: 16px;
+      background: var(--btn-charcoal);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 600;
       transition: opacity 0.2s;
     }
 
-    .admin-post-slot:hover .post-edit-overlay {
-      opacity: 1;
+    .modal-link-btn:active {
+      opacity: 0.9;
     }
 
-    .btn-post-change {
-      background: #ffffff;
-      color: var(--pink-title);
-      border-radius: 12px;
-      padding: 4px 8px;
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .reviews-admin-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      max-height: 360px;
-      overflow-y: auto;
-      padding-right: 4px;
-    }
-
-    .review-item {
-      background: #ffffff;
-      border: 1px solid var(--border-soft);
-      border-radius: 16px;
-      padding: 12px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .btn-delete {
-      background: #fff5f8;
-      border: 1px solid var(--border-soft);
-      color: var(--pink-title);
-      padding: 5px 12px;
-      border-radius: 12px;
-      font-size: 11.5px;
-      font-weight: 600;
-      cursor: pointer;
+    .footer-note {
+      text-align: center;
+      font-size: 12px;
+      color: var(--pastel-gray);
+      margin-top: 16px;
+      letter-spacing: 0.2px;
     }
   </style>
 </head>
 <body>
 
+  <!-- Floating Emojis -->
+  <div class="floating-container" id="emojiContainer"></div>
+
+  <!-- Background Music -->
+  <audio id="bgMusic" loop autoplay playsinline src="https://files.catbox.moe/zy1wnq.mp3"></audio>
+
   <div class="container">
 
-    <div id="loginView">
-      <div class="login-card">
-        <h1 class="login-title">Admin Login ♡</h1>
-        
-        <form onsubmit="handleLogin(event)">
-          <div class="form-group">
-            <label>email</label>
-            <input type="email" id="emailInput" class="input-field" placeholder="srezinalm@gmail.com" required>
-          </div>
+    <!-- กล่องโปรไฟล์ -->
+    <div class="profile-card">
+      <div class="banner-container">
+        <img id="mainBanner" class="banner-img" src="https://i.postimg.cc/26YfhPc1/CA378830-D049-4F10-B91D-83E369F619D9.gif" alt="Banner">
+      </div>
 
-          <div class="form-group">
-            <label>password</label>
-            <input type="password" id="passwordInput" class="input-field" placeholder="••••••••" required>
-          </div>
+      <div class="profile-wrap">
+        <img id="mainProfile" class="profile-img" src="https://i.ibb.co/gZg1bdv9/IMG-3203.jpg" alt="Profile">
+      </div>
 
-          <button type="submit" class="btn-pink">เข้าสู่ระบบ ✨</button>
-          <p id="loginError" class="error-text">อีเมลหรือรหัสผ่านไม่ถูกต้องค่ะ</p>
-        </form>
+      <h1 class="store-name" id="storeNameText">welcome to bebselris ♡</h1>
+      <p class="bio-text" id="storeBioText">เชิญเลือกดูงานร้านเค้าได้เลยนะคะ
+สนใจติดต่อสอบถามได้เลยค่ะ</p>
+
+      <div>
+        <a id="contactLinkBtn" href="https://lin.ee/Ql4HBD4" target="_blank" class="contact-btn">
+          <span>💬</span> <span id="contactIdText">Line : @861pblyp</span>
+        </a>
       </div>
     </div>
 
-    <div id="dashboardView">
-      
-      <div class="top-bar">
-        <div class="welcome-text">welcome admin ♡</div>
-        <button class="logout-btn" onclick="handleLogout()">Log Out</button>
+    <!-- โพสต์ตัวอย่างงาน -->
+    <div class="section-card">
+      <div class="section-title">📂 Portfolio & Works</div>
+      <div class="posts-grid" id="postsGrid">
+        <p style="text-align: center; grid-column: span 3; font-size: 12px; color: var(--pastel-gray);">กำลังโหลดตัวอย่างงาน...</p>
       </div>
-
-      <!-- 1. ข้อมูลร้าน -->
-      <div class="panel-card">
-        <div class="panel-title">🎀 ข้อมูลร้านและโปรไฟล์ไอจี</div>
-
-        <div class="form-group">
-          <label>รูปแบนเนอร์ GIF / ภาพ (เลือกจากเครื่อง)</label>
-          <div class="upload-box">
-            <img id="bannerPreview" class="preview-banner" alt="Banner Preview">
-            <label class="file-btn">
-              เปลี่ยนรูปแบนเนอร์
-              <input type="file" accept="image/*" style="display: none;" onchange="handleImageFile(this, 'bannerPreview', 'banner', 550)">
-            </label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>รูปโปรไฟล์ (เลือกจากเครื่อง)</label>
-          <div class="upload-box">
-            <img id="profilePreview" class="preview-profile" alt="Profile Preview">
-            <label class="file-btn">
-              เปลี่ยนรูปโปรไฟล์
-              <input type="file" accept="image/*" style="display: none;" onchange="handleImageFile(this, 'profilePreview', 'profile', 350)">
-            </label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>ชื่อร้าน (Instagram Username)</label>
-          <input type="text" id="storeNameInput" class="input-field" placeholder="soeulity ♡">
-        </div>
-
-        <div class="form-group">
-          <label>ข้อความไบโอร้าน</label>
-          <textarea id="storeBioInput" class="textarea-field" rows="3" placeholder="welcome to soeulity ♡..."></textarea>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-          <div class="form-group">
-            <label>Posts</label>
-            <input type="text" id="statPostsInput" class="input-field" placeholder="6">
-          </div>
-          <div class="form-group">
-            <label>Followers</label>
-            <input type="text" id="statFollowersInput" class="input-field" placeholder="2.4k">
-          </div>
-          <div class="form-group">
-            <label>Following</label>
-            <input type="text" id="statFollowingInput" class="input-field" placeholder="189">
-          </div>
-        </div>
-      </div>
-
-      <!-- 2. ไฮไลท์ 4 รายการ -->
-      <div class="panel-card">
-        <div class="panel-title">✨ จัดการไฮไลท์ 4 รายการ</div>
-        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
-          เปลี่ยนรูปปก ตั้งชื่อ และเพิ่มรูปสตอรี่ได้สูงสุด 15 รูปต่อหนึ่งไฮไลท์
-        </p>
-
-        <div id="highlightsAdminBox"></div>
-      </div>
-
-      <!-- 3. โพสต์ 6 รูป -->
-      <div class="panel-card">
-        <div class="panel-title">📸 จัดการรูป 6 โพสต์</div>
-        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
-          แตะที่รูปเพื่อเลือกเปลี่ยนรูปภาพของโพสต์นั้นๆ จากเครื่องได้เลยค่ะ
-        </p>
-
-        <div class="admin-posts-grid" id="adminPostsGrid"></div>
-      </div>
-
-      <!-- 4. เพลง -->
-      <div class="panel-card">
-        <div class="panel-title">🎵 ลิงก์เพลงพื้นหลัง (.mp3)</div>
-        <div class="form-group" style="margin-bottom: 0;">
-          <input type="url" id="musicUrlInput" class="input-field" placeholder="https://files.catbox.moe/zy1wnq.mp3">
-        </div>
-      </div>
-
-      <button type="button" class="btn-pink" id="saveAllBtn" style="font-size: 15px; padding: 14px; margin-bottom: 20px;" onclick="saveAllToCloud()">
-        ☁️ บันทึกขึ้นระบบ (หน้าเว็บเปลี่ยนทันที) ♡
-      </button>
-
-      <!-- 5. จัดการรีวิว -->
-      <div class="panel-card">
-        <div class="panel-title">🗑️️ รีวิวจากลูกค้า (กดลบได้)</div>
-        <div class="reviews-admin-list" id="reviewsAdminContainer">
-          <p style="text-align: center; color: var(--text-muted); font-size: 12.5px;">กำลังโหลดรีวิว...</p>
-        </div>
-      </div>
-
     </div>
+
+    <div class="footer-note">thank you for supporting bebseleis ♡</div>
 
   </div>
 
-  <script>
-    const AUTH_EMAIL = "srezinalm@gmail.com";
-    const AUTH_PASS = "@Natthanan2911";
+  <!-- Modal สำหรับกดดูโพสต์ -->
+  <div class="modal-overlay" id="postModal">
+    <div class="modal-card">
+      <button type="button" class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-img-wrap">
+        <img id="modalImg" src="" alt="Work Preview">
+      </div>
+      <div class="modal-desc" id="modalDesc">คำอธิบายงาน...</div>
+      <a id="modalLink" href="#" target="_blank" class="modal-link-btn">
+        🔗 เปิดดูลำดับงาน / ลิงก์ชิ้นงาน
+      </a>
+    </div>
+  </div>
 
+  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyCpAGDSy1NRgmLV_g7qJrCpwOhU9MrfQyY",
       authDomain: "benefitie.firebaseapp.com",
@@ -508,316 +386,99 @@
     }
     const db = firebase.firestore();
 
-    let siteData = {
-      banner: "https://i.postimg.cc/26YfhPc1/CA378830-D049-4F10-B91D-83E369F619D9.gif",
-      profile: "https://i.ibb.co/gZg1bdv9/IMG-3203.jpg",
-      storeName: "soeulity ♡",
-      storeBio: "welcome to soeulity ♡\nขอบคุณที่กดเข้ามาดูนะคะ ดูรีวิวหรือตัวอย่างงานกันก่อนได้น้า luvluv",
-      statPosts: "6",
-      statFollowers: "2.4k",
-      statFollowing: "189",
-      musicUrl: "https://files.catbox.moe/zy1wnq.mp3",
-      highlights: [
-        { title: "Review 1", cover: "https://i.ibb.co/gZg1bdv9/IMG-3203.jpg", stories: [] },
-        { title: "Review 2", cover: "https://i.ibb.co/gZg1bdv9/IMG-3203.jpg", stories: [] },
-        { title: "Review 3", cover: "https://i.ibb.co/gZg1bdv9/IMG-3203.jpg", stories: [] },
-        { title: "Review 4", cover: "https://i.ibb.co/gZg1bdv9/IMG-3203.jpg", stories: [] }
-      ],
-      posts: [
-        "https://i.ibb.co/gZg1bdv9/IMG-3203.jpg",
-        "https://i.ibb.co/gZg1bdv9/IMG-3203.jpg",
-        "https://i.ibb.co/gZg1bdv9/IMG-3203.jpg",
-        "https://i.ibb.co/gZg1bdv9/IMG-3203.jpg",
-        "https://i.ibb.co/gZg1bdv9/IMG-3203.jpg",
-        "https://i.ibb.co/gZg1bdv9/IMG-3203.jpg"
-      ]
-    };
+    // รายการอีโมจิตั้งต้น (จะเปลี่ยนตามที่แอดมินตั้งค่าใน Firestore)
+    let floatingIcons = ['☁️️', '🩶', '🎱'];
 
-    window.onload = function() {
-      if (sessionStorage.getItem('soeulity_admin_auth_v4') === 'true') {
-        showDashboard();
-      }
-    };
+    // ดึงการตั้งค่าเว็บ Real-time
+    db.collection("bebselris_portfolio").doc("site_config").onSnapshot(doc => {
+      if (doc.exists) {
+        const d = doc.data();
+        if (d.banner) document.getElementById('mainBanner').src = d.banner;
+        if (d.profile) document.getElementById('mainProfile').src = d.profile;
+        if (d.storeName) document.getElementById('storeNameText').textContent = d.storeName;
+        if (d.storeBio) document.getElementById('storeBioText').textContent = d.storeBio;
 
-    function handleLogin(e) {
-      e.preventDefault();
-      const email = document.getElementById('emailInput').value.trim();
-      const pass = document.getElementById('passwordInput').value.trim();
-      const err = document.getElementById('loginError');
+        if (d.contactId) document.getElementById('contactIdText').textContent = d.contactId;
+        if (d.contactUrl) document.getElementById('contactLinkBtn').href = d.contactUrl;
 
-      if (email === AUTH_EMAIL && pass === AUTH_PASS) {
-        sessionStorage.setItem('soeulity_admin_auth_v4', 'true');
-        err.style.display = 'none';
-        showDashboard();
-      } else {
-        err.style.display = 'block';
-      }
-    }
+        // อัปเดตลูกเล่นลอยตามที่แอดมินตั้งค่า
+        if (d.floatingIcons && d.floatingIcons.trim() !== '') {
+          floatingIcons = d.floatingIcons.trim().split(/\s+/);
+        }
 
-    function handleLogout() {
-      sessionStorage.removeItem('soeulity_admin_auth_v4');
-      document.getElementById('dashboardView').style.display = 'none';
-      document.getElementById('loginView').style.display = 'flex';
-    }
-
-    async function showDashboard() {
-      document.getElementById('loginView').style.display = 'none';
-      document.getElementById('dashboardView').style.display = 'block';
-
-      try {
-        const doc = await db.collection("soeulity_app_v4").doc("profile_data").get();
-        if (doc.exists) {
-          siteData = { ...siteData, ...doc.data() };
-          if (!siteData.highlights || siteData.highlights.length < 4) {
-            siteData.highlights = [
-              { title: "Review 1", cover: "https://i.ibb.co/gZg1bdv9/IMG-3203.jpg", stories: [] },
-              { title: "Review 2", cover: "https://i.ibb.co/gZg1bdv9/IMG-3203.jpg", stories: [] },
-              { title: "Review 3", cover: "https://i.ibb.co/gZg1bdv9/IMG-3203.jpg", stories: [] },
-              { title: "Review 4", cover: "https://i.ibb.co/gZg1bdv9/IMG-3203.jpg", stories: [] }
-            ];
+        if (d.musicUrl) {
+          const m = document.getElementById('bgMusic');
+          if (m && m.src !== d.musicUrl) {
+            m.src = d.musicUrl;
+            m.play().catch(() => {});
           }
         }
-      } catch (err) {
-        console.error(err);
       }
+    });
 
-      renderAdminPanels();
-      listenReviewsAdmin();
-    }
-
-    function renderAdminPanels() {
-      if (siteData.banner) {
-        const b = document.getElementById('bannerPreview');
-        b.src = siteData.banner;
-        b.style.display = 'block';
-      }
-      if (siteData.profile) {
-        const p = document.getElementById('profilePreview');
-        p.src = siteData.profile;
-        p.style.display = 'block';
-      }
-      document.getElementById('storeNameInput').value = siteData.storeName || '';
-      document.getElementById('storeBioInput').value = siteData.storeBio || '';
-      document.getElementById('statPostsInput').value = siteData.statPosts || '6';
-      document.getElementById('statFollowersInput').value = siteData.statFollowers || '2.4k';
-      document.getElementById('statFollowingInput').value = siteData.statFollowing || '189';
-      document.getElementById('musicUrlInput').value = siteData.musicUrl || '';
-
-      const hlBox = document.getElementById('highlightsAdminBox');
-      hlBox.innerHTML = '';
-
-      siteData.highlights.forEach((hl, hIdx) => {
-        const card = document.createElement('div');
-        card.className = 'hl-admin-card';
-
-        let storiesHTML = '';
-        const currentCount = hl.stories ? hl.stories.length : 0;
-
-        if (hl.stories) {
-          hl.stories.forEach((stImg, sIdx) => {
-            storiesHTML += `
-              <div class="story-slot">
-                <img src="${stImg}">
-                <button class="del-story-btn" onclick="removeStoryImage(${hIdx}, ${sIdx})">✕</button>
-              </div>
-            `;
-          });
-        }
-
-        let addBtnHTML = '';
-        if (currentCount < 15) {
-          addBtnHTML = `
-            <div class="story-slot" style="cursor: pointer;">
-              <label style="cursor: pointer; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--pink-title);">
-                +
-                <input type="file" accept="image/*" style="display: none;" onchange="addStoryImage(this, ${hIdx})">
-              </label>
-            </div>
-          `;
-        }
-
-        card.innerHTML = `
-          <div style="font-weight: 700; color: var(--pink-title); margin-bottom: 8px;">ไฮไลท์ที่ ${hIdx + 1}</div>
-          <div class="hl-header-row">
-            <img src="${hl.cover || 'https://i.ibb.co/gZg1bdv9/IMG-3203.jpg'}" class="hl-cover-preview" id="hlCoverPreview_${hIdx}">
-            <div style="flex: 1;">
-              <input type="text" id="hlTitle_${hIdx}" class="input-field" value="${hl.title || ''}" placeholder="ชื่อไฮไลท์" style="margin-bottom: 6px;">
-              <label class="file-btn" style="font-size: 11px; padding: 4px 12px;">
-                เปลี่ยนรูปปก
-                <input type="file" accept="image/*" style="display: none;" onchange="changeHlCover(this, ${hIdx})">
-              </label>
-            </div>
-          </div>
-
-          <div style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-top: 10px;">
-            รูปในสตอรี่ (${currentCount}/15 รูป):
-          </div>
-          <div class="stories-grid">
-            ${storiesHTML}
-            ${addBtnHTML}
-          </div>
-        `;
-        hlBox.appendChild(card);
-      });
-
-      const grid = document.getElementById('adminPostsGrid');
+    // ดึงโพสต์งาน
+    db.collection("bebselris_posts").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+      const grid = document.getElementById('postsGrid');
       grid.innerHTML = '';
-      for (let i = 0; i < 6; i++) {
-        const img = (siteData.posts && siteData.posts[i]) ? siteData.posts[i] : 'https://i.ibb.co/gZg1bdv9/IMG-3203.jpg';
+
+      if (snapshot.empty) {
+        grid.innerHTML = '<p style="text-align:center; grid-column:span 3; font-size:12px; color:var(--pastel-gray);">ยังไม่มีตัวอย่างงานที่ลงไว้ค่ะ ♡</p>';
+        return;
+      }
+
+      snapshot.forEach(doc => {
+        const item = { id: doc.id, ...doc.data() };
         const slot = document.createElement('div');
-        slot.className = 'admin-post-slot';
-        slot.innerHTML = `
-          <img src="${img}" id="postSlotImg_${i}">
-          <div class="post-edit-overlay">
-            <label class="btn-post-change">
-              เปลี่ยนรูป
-              <input type="file" accept="image/*" style="display: none;" onchange="changePostImage(this, ${i})">
-            </label>
-          </div>
-        `;
+        slot.className = 'post-slot';
+        slot.onclick = () => openPostModal(item);
+        slot.innerHTML = `<img src="${item.imageUrl || 'https://i.ibb.co/gZg1bdv9/IMG-3203.jpg'}" alt="Portfolio">`;
         grid.appendChild(slot);
-      }
-    }
+      });
+    });
 
-    function compressImage(file, maxWidth, quality, callback) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const img = new Image();
-        img.onload = function() {
-          const canvas = document.createElement('canvas');
-          let width = img.width;
-          let height = img.height;
-          if (width > maxWidth) {
-            height = Math.round((height * maxWidth) / width);
-            width = maxWidth;
-          }
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, width, height);
-          callback(canvas.toDataURL('image/jpeg', quality));
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function handleImageFile(input, previewId, key, maxWidth) {
-      if (input.files && input.files[0]) {
-        compressImage(input.files[0], maxWidth, 0.72, function(base64) {
-          siteData[key] = base64;
-          const imgElem = document.getElementById(previewId);
-          imgElem.src = base64;
-          imgElem.style.display = 'block';
-        });
-      }
-    }
-
-    function changeHlCover(input, hlIdx) {
-      if (input.files && input.files[0]) {
-        compressImage(input.files[0], 350, 0.7, function(base64) {
-          siteData.highlights[hlIdx].cover = base64;
-          document.getElementById(`hlCoverPreview_${hlIdx}`).src = base64;
-        });
-      }
-    }
-
-    function addStoryImage(input, hlIdx) {
-      if (input.files && input.files[0]) {
-        if (!siteData.highlights[hlIdx].stories) siteData.highlights[hlIdx].stories = [];
-        if (siteData.highlights[hlIdx].stories.length >= 15) {
-          alert('ใส่รูปในสตอรี่นี้ครบ 15 รูปแล้วค่ะ');
-          return;
-        }
-
-        compressImage(input.files[0], 450, 0.65, function(base64) {
-          siteData.highlights[hlIdx].stories.push(base64);
-          renderAdminPanels();
-        });
-      }
-    }
-
-    function removeStoryImage(hlIdx, storyIdx) {
-      siteData.highlights[hlIdx].stories.splice(storyIdx, 1);
-      renderAdminPanels();
-    }
-
-    function changePostImage(input, index) {
-      if (input.files && input.files[0]) {
-        compressImage(input.files[0], 450, 0.68, function(base64) {
-          if (!siteData.posts) siteData.posts = [];
-          siteData.posts[index] = base64;
-          document.getElementById(`postSlotImg_${index}`).src = base64;
-        });
-      }
-    }
-
-    async function saveAllToCloud() {
-      const btn = document.getElementById('saveAllBtn');
-      btn.disabled = true;
-      btn.textContent = 'กำลังบันทึกข้อมูล... ⏳';
-
-      siteData.storeName = document.getElementById('storeNameInput').value.trim() || 'soeulity ♡';
-      siteData.storeBio = document.getElementById('storeBioInput').value.trim();
-      siteData.statPosts = document.getElementById('statPostsInput').value.trim() || '6';
-      siteData.statFollowers = document.getElementById('statFollowersInput').value.trim() || '2.4k';
-      siteData.statFollowing = document.getElementById('statFollowingInput').value.trim() || '189';
-      siteData.musicUrl = document.getElementById('musicUrlInput').value.trim();
-
-      for (let i = 0; i < 4; i++) {
-        const titleVal = document.getElementById(`hlTitle_${i}`).value.trim();
-        siteData.highlights[i].title = titleVal || `Highlight ${i + 1}`;
+    function openPostModal(post) {
+      document.getElementById('modalImg').src = post.imageUrl || '';
+      document.getElementById('modalDesc').textContent = post.description || 'ไม่มีคำอธิบายเพิ่มเติมค่ะ ♡';
+      
+      const linkBtn = document.getElementById('modalLink');
+      if (post.workUrl && post.workUrl.trim() !== '') {
+        linkBtn.href = post.workUrl;
+        linkBtn.style.display = 'flex';
+      } else {
+        linkBtn.style.display = 'none';
       }
 
-      try {
-        await db.collection("soeulity_app_v4").doc("profile_data").set(siteData);
-        alert('✨ บันทึกข้อมูล ไฮไลท์ และ 6 โพสต์ขึ้นระบบเรียบร้อยแล้วค่ะ!');
-      } catch (err) {
-        console.error(err);
-        alert('เกิดข้อผิดพลาดในการบันทึก กรุณาลองใหม่อีกครั้งนะคะ');
-      } finally {
-        btn.disabled = false;
-        btn.textContent = '☁️ บันทึกขึ้นระบบ (หน้าเว็บเปลี่ยนทันที) ♡';
-      }
+      document.getElementById('postModal').classList.add('active');
     }
 
-    function listenReviewsAdmin() {
-      db.collection("soeulity_reviews_v4")
-        .orderBy("createdAt", "desc")
-        .onSnapshot(snapshot => {
-          const container = document.getElementById('reviewsAdminContainer');
-          if (snapshot.empty) {
-            container.innerHTML = '<p style="text-align: center; color: var(--text-muted); font-size: 12.5px;">ไม่มีรีวิวในระบบ</p>';
-            return;
-          }
-
-          let html = '';
-          snapshot.forEach(doc => {
-            const r = doc.data();
-            html += `
-              <div class="review-item">
-                <div style="flex: 1; padding-right: 8px;">
-                  <div style="font-weight: 700; font-size: 13.5px;">${r.name}</div>
-                  <div style="font-size: 12px; margin: 2px 0;">${'⭐️'.repeat(r.stars || 5)}</div>
-                  <div style="font-size: 12.5px; color: #725b60;">${r.feedback}</div>
-                </div>
-                <button class="btn-delete" onclick="deleteReview('${doc.id}')">ลบ 🗑️</button>
-              </div>
-            `;
-          });
-          container.innerHTML = html;
-        });
+    function closeModal() {
+      document.getElementById('postModal').classList.remove('active');
     }
 
-    async function deleteReview(docId) {
-      if (confirm('ต้องการลบรีวิวนี้ใช่หรือไม่คะ? 🗑️')) {
-        try {
-          await db.collection("soeulity_reviews_v4").doc(docId).delete();
-        } catch (e) {
-          console.error(e);
-        }
-      }
+    // Audio Autoplay
+    const music = document.getElementById('bgMusic');
+    function startMusic() {
+      if (music.paused) music.play().catch(() => {});
     }
+    window.addEventListener('DOMContentLoaded', () => {
+      startMusic();
+      document.body.addEventListener('click', startMusic, { once: true });
+      document.body.addEventListener('touchstart', startMusic, { once: true });
+    });
+
+    // Floating Emojis
+    const emojiBox = document.getElementById('emojiContainer');
+    function createEmoji() {
+      if (!floatingIcons || floatingIcons.length === 0) return;
+      const el = document.createElement('div');
+      el.className = 'float-item';
+      el.textContent = floatingIcons[Math.floor(Math.random() * floatingIcons.length)];
+      el.style.left = Math.random() * 92 + 'vw';
+      el.style.animationDuration = (8 + Math.random() * 5) + 's';
+      emojiBox.appendChild(el);
+      setTimeout(() => { el.remove(); }, 14000);
+    }
+    setInterval(createEmoji, 1300);
   </script>
 </body>
 </html>
