@@ -14,6 +14,7 @@
 
   <style>
     :root {
+      /* โทนขาว-ดำพาสเทล ละมุนตา */
       --bg-color: #f7f7f8;
       --card-bg: rgba(255, 255, 255, 0.94);
       --pastel-dark: #3a3a3e;
@@ -40,6 +41,7 @@
       position: relative;
     }
 
+    /* Floating Emojis (☁️ 🩶 🎱) */
     .floating-container {
       position: fixed;
       top: 0;
@@ -68,15 +70,14 @@
     }
 
     .container {
-      width: 100%;
-      max-width: 500px;
+      max-width: 440px;
       margin: 0 auto;
       padding: 24px 16px 80px;
       position: relative;
       z-index: 2;
     }
 
-    /* Profile Card */
+    /* Profile Box */
     .profile-card {
       background: var(--card-bg);
       backdrop-filter: blur(14px);
@@ -159,12 +160,12 @@
       background: #fafafa;
     }
 
-    /* Section Posts: แสดงขนาดรูปตามจริง */
+    /* Section Grid Posts */
     .section-card {
       background: var(--card-bg);
       backdrop-filter: blur(14px);
       border-radius: 26px;
-      padding: 18px 16px;
+      padding: 18px 14px;
       box-shadow: var(--glow-shadow);
       border: 2px solid #ffffff;
       margin-bottom: 20px;
@@ -181,41 +182,41 @@
       padding-left: 2px;
     }
 
-    /* ตารางโพสต์: แสดงอัตราส่วนจริงของรูป ไม่บีบตัด */
+    /* ตารางโพสต์แบบ Instagram: สี่เหลี่ยมจัตุรัสเล็ก ๆ 3 ช่อง */
     .posts-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
     }
 
     .post-slot {
-      width: 100%;
-      border-radius: 18px;
+      aspect-ratio: 1;
+      border-radius: 14px;
       overflow: hidden;
       border: 1.5px solid #ffffff;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-      background: #ffffff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+      background: #ededf0;
       cursor: pointer;
+      position: relative;
     }
 
     .post-slot img {
       width: 100%;
-      height: auto;
-      max-height: 800px;
-      object-fit: contain;
-      display: block;
+      height: 100%;
+      object-fit: cover;
       transition: transform 0.2s ease;
+      display: block;
     }
 
     .post-slot:hover img {
-      transform: scale(1.01);
+      transform: scale(1.06);
     }
 
-    /* Modal Popup ดูงานขนาดเต็ม */
+    /* Modal Popup ดูงาน: แสดงรูปตามขนาดจริง 100% ไม่บีบรูป */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(30, 30, 34, 0.6);
+      background: rgba(25, 25, 28, 0.65);
       backdrop-filter: blur(8px);
       z-index: 9999;
       display: none;
@@ -230,14 +231,14 @@
 
     .modal-card {
       width: 100%;
-      max-width: 460px;
+      max-width: 440px;
       max-height: 90vh;
       overflow-y: auto;
       background: #ffffff;
       border-radius: 24px;
       padding: 16px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
-      animation: popIn 0.22s ease;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+      animation: popIn 0.22s cubic-bezier(0.18, 0.89, 0.32, 1.28);
       position: relative;
     }
 
@@ -248,22 +249,24 @@
 
     .modal-close {
       position: absolute;
-      top: 14px;
-      right: 14px;
+      top: 12px;
+      right: 12px;
       background: rgba(244, 244, 246, 0.9);
       border: none;
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       color: var(--pastel-dark);
-      font-size: 15px;
+      font-size: 14px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 10;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
+    /* กล่องรูปภาพใน Modal: โชว์ขนาดและสัดส่วนจริงของรูป */
     .modal-img-wrap {
       width: 100%;
       border-radius: 16px;
@@ -275,13 +278,13 @@
       justify-content: center;
     }
 
-    /* รูปขนาดจริงตามที่ลงไว้ */
     .modal-img-wrap img {
       width: 100%;
       height: auto;
-      max-height: 70vh;
+      max-height: 65vh;
       object-fit: contain;
       display: block;
+      border-radius: 16px;
     }
 
     .modal-desc {
@@ -299,7 +302,7 @@
       justify-content: center;
       gap: 6px;
       width: 100%;
-      padding: 12px;
+      padding: 11px;
       border-radius: 16px;
       background: var(--btn-charcoal);
       color: #ffffff;
@@ -324,11 +327,15 @@
 </head>
 <body>
 
+  <!-- Floating Emojis -->
   <div class="floating-container" id="emojiContainer"></div>
+
+  <!-- Background Music -->
   <audio id="bgMusic" loop autoplay playsinline src="https://files.catbox.moe/zy1wnq.mp3"></audio>
 
   <div class="container">
 
+    <!-- กล่องโปรไฟล์ -->
     <div class="profile-card">
       <div class="banner-container">
         <img id="mainBanner" class="banner-img" src="https://i.postimg.cc/26YfhPc1/CA378830-D049-4F10-B91D-83E369F619D9.gif" alt="Banner">
@@ -349,11 +356,11 @@
       </div>
     </div>
 
-    <!-- โพสต์ตัวอย่างงาน -->
+    <!-- โพสต์ตัวอย่างงานแบบสี่เหลี่ยมเล็ก (3 ช่องสไตล์ไอจี) -->
     <div class="section-card">
       <div class="section-title">📂 Portfolio & Works</div>
       <div class="posts-grid" id="postsGrid">
-        <p style="text-align: center; font-size: 12px; color: var(--pastel-gray);">กำลังโหลดตัวอย่างงาน...</p>
+        <p style="text-align: center; grid-column: span 3; font-size: 12px; color: var(--pastel-gray);">กำลังโหลดตัวอย่างงาน...</p>
       </div>
     </div>
 
@@ -361,6 +368,7 @@
 
   </div>
 
+  <!-- Modal สำหรับกดดูโพสต์ (รูปตามขนาดจริง) -->
   <div class="modal-overlay" id="postModal">
     <div class="modal-card">
       <button type="button" class="modal-close" onclick="closeModal()">✕</button>
@@ -391,6 +399,7 @@
 
     let floatingIcons = ['☁️', '🩶', '🎱'];
 
+    // ดึงข้อมูลเว็บไซต์แบบ Realtime
     db.collection("bebselris_portfolio").doc("site_config").onSnapshot(doc => {
       if (doc.exists) {
         const d = doc.data();
@@ -416,12 +425,13 @@
       }
     });
 
+    // ดึงรายการโพสต์แสดงในตาราง 3 ช่อง
     db.collection("bebselris_posts").orderBy("createdAt", "desc").onSnapshot(snapshot => {
       const grid = document.getElementById('postsGrid');
       grid.innerHTML = '';
 
       if (snapshot.empty) {
-        grid.innerHTML = '<p style="text-align:center; font-size:12px; color:var(--pastel-gray);">ยังไม่มีตัวอย่างงานที่ลงไว้ค่ะ ♡</p>';
+        grid.innerHTML = '<p style="text-align:center; grid-column:span 3; font-size:12px; color:var(--pastel-gray);">ยังไม่มีตัวอย่างงานที่ลงไว้ค่ะ ♡</p>';
         return;
       }
 
@@ -435,6 +445,7 @@
       });
     });
 
+    // เปิด Modal แสดงรูปขนาดจริง
     function openPostModal(post) {
       document.getElementById('modalImg').src = post.imageUrl || '';
       document.getElementById('modalDesc').textContent = post.description || 'ไม่มีคำอธิบายเพิ่มเติมค่ะ ♡';
@@ -454,6 +465,7 @@
       document.getElementById('postModal').classList.remove('active');
     }
 
+    // Audio Autoplay
     const music = document.getElementById('bgMusic');
     function startMusic() {
       if (music.paused) music.play().catch(() => {});
@@ -464,6 +476,7 @@
       document.body.addEventListener('touchstart', startMusic, { once: true });
     });
 
+    // Floating Emojis
     const emojiBox = document.getElementById('emojiContainer');
     function createEmoji() {
       if (!floatingIcons || floatingIcons.length === 0) return;
@@ -479,4 +492,3 @@
   </script>
 </body>
 </html>
-
